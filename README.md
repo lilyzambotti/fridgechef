@@ -10,7 +10,7 @@ Users type their ingredients or upload a photo of their fridge, and AI suggests 
 | 1. Homepage explaining the product and why it's worth paying for | `app/page.js` (hero, how it works, benefits, pricing, founder) |
 | 2. Real sign-up and login | `app/signup`, `app/login`, `app/api/auth/*`. Passwords are hashed with bcrypt, users are stored in Neon, and sessions use a signed httpOnly cookie |
 | 3. A main feature powered by AI | `app/dashboard` + `app/api/recipes` + `lib/ai.js`. Claude reads the text or photo and returns 3 structured recipes |
-| 4. Stripe payments | `app/api/checkout` (Pro plan, $1/month by default), `app/api/stripe/webhook`, `app/api/billing-portal` |
+| 4. Stripe payments | `app/api/checkout` (Pro plan, $5.99/month by default), `app/api/stripe/webhook`, `app/api/billing-portal` |
 | 5. Demo account | `demo@demo.com` / `password123!` is created automatically with full Pro access and no email verification (`lib/db.js`) |
 
 **Free plan:** 3 recipe searches per week. **Pro:** unlimited searches plus saved favourite recipes.
@@ -98,7 +98,7 @@ This keeps Pro status correct when people pay or cancel.
 
 1. Test first: in Stripe test mode, sign up for a new account on your site, click **Upgrade to Pro**, and pay with card `4242 4242 4242 4242` (any future date and any CVC).
 2. Go live: activate your Stripe account, switch to **live mode**, and create a live secret key and a live webhook (steps 1 and 5 again). Put the live values in Vercel and redeploy.
-3. Upgrade with your own real card. The Pro plan costs $1/month (`PRO_PRICE_CENTS=100`). Screenshot the payment in Stripe as proof. You can then cancel through **Manage subscription**.
+3. Upgrade with your own real card. For the $1 proof, set `PRO_PRICE_CENTS=100` in Vercel and redeploy, then set it back to `599`. Screenshot the payment in Stripe as proof. You can then cancel through **Manage subscription**.
 
 ## Demo account for grading
 
@@ -111,6 +111,6 @@ It is created automatically the first time the site connects to the database, al
 
 | Variable | Default | What it does |
 |---|---|---|
-| `PRO_PRICE_CENTS` | `100` | Pro monthly price in cents |
+| `PRO_PRICE_CENTS` | `599` | Pro monthly price in cents |
 | `FREE_WEEKLY_LIMIT` | `3` | Free recipe searches per 7 days |
 | `AI_MODEL` | `claude-opus-5-5` | Claude model used for recipes |
