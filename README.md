@@ -113,4 +113,4 @@ It is created automatically the first time the site connects to the database, al
 |---|---|---|
 | `PRO_PRICE_CENTS` | `599` | Pro monthly price in cents |
 | `FREE_WEEKLY_LIMIT` | `3` | Free recipe searches per 7 days |
-| `AI_MODEL` | `claude-opus-5-5` | Claude model used for recipes |
+| `AI_MODEL` | `claude-haiku-5-5` | Claude model used for recipes |
