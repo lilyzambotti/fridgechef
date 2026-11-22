@@ -5,7 +5,7 @@ import UpgradeButton from "@/components/UpgradeButton";
 import { getCurrentUser } from "@/lib/auth";
 import { getUsage } from "@/lib/usage";
 import { getStripe, activateProFromCheckout } from "@/lib/stripe";
-import { formatPrice } from "@/lib/config";
+import { DEMO_EMAIL, formatPrice } from "@/lib/config";
 
 export const metadata = { title: "Cook | FridgeChef" };
 
@@ -33,7 +33,8 @@ export default async function Dashboard({ searchParams }) {
 
   const usage = await getUsage(user);
   const firstName = user.name.split(" ")[0];
-  const isDemoPro = user.is_pro && !user.stripe_subscription_id;
+  const isDemo = user.email === DEMO_EMAIL;
+  const isDemoPro = user.is_pro && (isDemo || !user.stripe_subscription_id);
 
   return (
     <>
@@ -54,7 +55,7 @@ export default async function Dashboard({ searchParams }) {
                   Upgrade to Pro, {formatPrice()}/mo
                 </UpgradeButton>
               )}
-              {user.is_pro && user.stripe_subscription_id && (
+              {user.is_pro && user.stripe_subscription_id && !isDemo && (
                 <UpgradeButton endpoint="/api/billing-portal" className="btn btn-ghost btn-small">Manage subscription</UpgradeButton>
               )}
               {isDemoPro && (
