@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
-import { getStripe } from "@/lib/stripe";
+import { getStripe, describeStripeKey } from "@/lib/stripe";
 import { APP_NAME, DEMO_EMAIL, PRO_PRICE_CENTS, siteUrl } from "@/lib/config";
 
 // Starts a Stripe Checkout for the Pro monthly plan and returns its URL.
@@ -43,8 +43,10 @@ export async function POST() {
     const message =
       err?.type === "StripeAuthenticationError"
         ? "Payments aren't set up correctly: the Stripe key on the server is invalid."
-        : err?.type?.startsWith("Stripe")
-          ? `Stripe error: ${err.message}`
+        : err?.type === "StripeConnectionError"
+          ? `Couldn't reach Stripe. Check the STRIPE_SECRET_KEY value in Vercel (${describeStripeKey()}).`
+          : err?.type?.startsWith("Stripe")
+            ? `Stripe error: ${err.message}`
           : "Payments aren't available right now. Please try again later.";
     return NextResponse.json({ error: message }, { status: 503 });
   }
